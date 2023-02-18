@@ -77,26 +77,46 @@ https://codepen.io/collection/wamGwK
 
 These custom properties will be added to `document.body` and will be updated if needed:
 
-| Name                     | Expected values                              |
-| ------------------------ | -------------------------------------------- |
-| --js-window-width        | XXXpx                                        |
-| --js-window-height       | XXXpx                                        |
-| --js-mouse-x             | 0px ~ window width                           |
-| --js-mouse-y             | 0px ~ window height                          |
-| --js-mouse-cx            | -(window width / 2) ~ (window width / 2)     |
-| --js-mouse-cy            | -(window height / 2) ~ (window height / 2)   |
-| --js-mouse-cd            | 0 ~ (window diagonal / 2)                    |
-| --js-mouse-x-normalized  | 0 ~ 1                                        |
-| --js-mouse-y-normalized  | 0 ~ 1                                        |
-| --js-mouse-cx-normalized | -1 at the left border, 1 at the right border |
-| --js-mouse-cy-normalized | -1 at the top border, 1 at the bottom border |
-| --js-mouse-cd-normalized | 0 in the center, 1 at the window corner      |
-| --js-scroll-y            | XXXpx                                        |
-| --js-scroll-y-normalized | 0 ~ 1, 1 at the end of the scroll            |
-| --js-time-s              | 0+                                           |
-| --js-time-ms             | 0+                                           |
-| --js-random-0            | 0 ~ 1                                        |
-| --js-random-1            | same as random-0, all the way to random-99   |
+### Feature: xy
+
+| Name                     | Expected values                                     |
+| ------------------------ | --------------------------------------------------- |
+| --js-window-width        | from 0px to a few thousand px                       |
+| --js-window-height       | from 0px to a few thousand px                       |
+| --js-mouse-x             | from 0px to window width                            |
+| --js-mouse-y             | from 0px to window height                           |
+| --js-mouse-cx            | from -(window width / 2) to (window width / 2)      |
+| --js-mouse-cy            | from -(window height / 2) to (window height / 2)    |
+| --js-mouse-cd            | from 0px to (window diagonal / 2)                   |
+| --js-mouse-x-normalized  | from 0 to 1                                         |
+| --js-mouse-y-normalized  | from 0 to 1                                         |
+| --js-mouse-cx-normalized | from -1 at the left border to 1 at the right border |
+| --js-mouse-cy-normalized | from -1 at the top border to 1 at the bottom border |
+| --js-mouse-cd-normalized | from 0 in the center to 1 at the window corner      |
+
+
+### Feature: scroll
+
+| Name                     | Expected values                                     |
+| ------------------------ | --------------------------------------------------- |
+| --js-scroll-y            | from 0px to a few thousand px                       |
+| --js-scroll-y-normalized | from 0 to 1 at the end of the scroll                |
+
+
+### Feature: time
+
+| Name                     | Expected values                                     |
+| ------------------------ | --------------------------------------------------- |
+| --js-time-s              | from 0 to Infinity                                  |
+| --js-time-ms             | from 0 to Infinity                                  |
+
+
+### Feature: random
+
+| Name                     | Expected values                                     |
+| ------------------------ | --------------------------------------------------- |
+| --js-random-0            | from 0 to 1                                         |
+| --js-random-1            | same as random-0, all the way to random-99          |
 
 
 ## Targets (optional)
@@ -107,7 +127,7 @@ By default, all coordinates will be calculated from the top left corner of the w
 <div data-medium-target>...</div>
 ```
 
-Targets will get additional local properties:
+Targets will get additional local properties for `xy` feature:
 
 | Name                              |
 | --------------------------------- |
@@ -125,7 +145,9 @@ Targets will get additional local properties:
 | --js-mouse-relative-cd-normalized |
 
 
-They have the same logic as the global ones, but we use the target element instead of the window in our calculations.
+They have almost the same logic as the global CSS custom properties, but we use the target element instead of the window in our calculations.
+
+*Note: since target elements can be smaller than the viewport, the coordinates of the mouse can be outside of them sometimes. Because of that, normalized values for target elements aren't limited to the range from 0 to 1 or from -1 to 1. They are fitted to have values of 0 or 1 on the targets borders with the same logic as the global ones and the window borders. We can clamp() these values in CSS if it's required.*
 
 To activate more target elements later we can use the `update` method:
 
