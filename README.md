@@ -14,6 +14,13 @@ npm install css.medium.js
 ```
 
 
+## CDN
+
+```javascript
+import Medium from 'https://unpkg.com/css.medium.js@1.0.0/css.medium.js';
+```
+
+
 ## Usage
 
 ### JS
