@@ -8,7 +8,7 @@
 //  with the current mouse position, scroll position, time, random values etc.
 //
 //  Author: Ivan Bogachev (@sfi0zy), 2023
-//  Version: 1.0
+//  Version: 1.0.1
 //  License: MIT
 //
 // ----------------------------------------------------------------------------
