@@ -68,6 +68,10 @@ See live example of how it works:
 
 https://sfi0zy.github.io/medium/
 
+More examples on CodePen:
+
+https://codepen.io/collection/wamGwK
+
 
 ## Global CSS custom properties
 
@@ -119,6 +123,7 @@ Targets will get additional local properties:
 | --js-mouse-relative-cx-normalized |
 | --js-mouse-relative-cy-normalized |
 | --js-mouse-relative-cd-normalized |
+
 
 They have the same logic as the global ones, but we use the target element instead of the window in our calculations.
 
