@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>Medium - Connect CSS and JS worlds</title>
+        <meta charset='UTF-8'>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'>
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Red+Hat+Mono&display=swap'>
+        <style>
+            :root {
+                --color: #480ca8;
+
+                font-family: 'Red Hat Mono', monospace;
+            }
+
+            ::selection {
+                background: var(--color);
+            }
+
+            a {
+                text-decoration: none;
+            }
+
+            a,
+            a:hover,
+            a:focus,
+            a:visited {
+                color: var(--color);
+            }
+
+            a:hover,
+            a:focus {
+                text-decoration: underline;
+            }
+
+            sup {
+                font-size: .5em;
+                padding: 0 .5em;
+            }
+
+            h2 {
+                margin-top: 2rem;
+            }
+
+            #logo {
+                height: 5rem;
+                width: 5rem;
+                margin: 2rem 0;
+                position: relative;
+                background: linear-gradient(to right, var(--color) 0%, var(--color) 100%);
+                background-size: 5% 100%;
+                background-position: 35% 0;
+                background-repeat: no-repeat;
+            }
+
+            #logo::before,
+            #logo::after {
+                display: block;
+                content: '';
+                position: absolute;
+                z-index: -1;
+                background: #000000;
+            }
+
+            #logo::before {
+                height: 30%;
+                width: 30%;
+                top: 50%;
+                left: 0%;
+                transform-origin: 0 0;
+                transform: rotate(-45deg);
+            }
+
+            #logo::after {
+                height: 50%;
+                width: 50%;
+                top: 50%;
+                right: 0;
+                transform-origin: 100% 0;
+                transform: rotate(45deg);
+            }
+
+            #container {
+                width: 90%;
+                max-width: 30rem;
+                margin: 0 auto;
+            }
+
+            #target {
+                position: relative;
+                height: 30vmin;
+                width: 30vmin;
+                margin: 2rem 0;
+                text-align: center;
+                line-height: 30vmin;
+                border: 1px solid #000000;
+                transform:
+                    perspective(10rem)
+                    rotateY(calc(1deg * var(--js-mouse-relative-cx-normalized)))
+                    rotateX(calc(-1deg * var(--js-mouse-relative-cy-normalized)));
+            }
+
+            #void {
+                line-height: 100vh;
+            }
+
+            #cursor {
+                height: 3rem;
+                width: 3rem;
+                position: fixed;
+                top: -1.5rem;
+                left: -1.5rem;
+                border: 2px solid var(--color);
+                border-radius: 50%;
+                transform: translateX(var(--js-mouse-x)) translateY(var(--js-mouse-y));
+                pointer-events: none;
+                z-index: -1;
+            }
+
+            #scroll-indicator {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 2px;
+                width: 100%;
+                background: var(--color);
+                transform: scaleX(var(--js-scroll-y-normalized));
+                transform-origin: 0 0;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id='container'>
+            <div id='logo'></div>
+
+            <h1>Medium<sup>v1.0</sup></h1>
+            <p>Connect CSS and JS worlds.</p>
+            <p>This tool adds CSS custom properties with the current mouse position, scroll position, time, random values etc.</p>
+
+            <h2>NPM</h2>
+            <code>npm install css.medium.js</code>
+
+            <h2>Usage</h2>
+            <h3>JS:</h3>
+            <code><pre>
+import Medium from 'css.medium.js';
+
+const medium = new Medium({
+    features: {
+        xy: true,
+        scroll: true,
+        time: true,
+        random: true,
+    },
+});</pre></code>
+            <h3>CSS:</h3>
+            <code><pre>
+#scroll-indicator {
+    transform: scaleX(var(--js-scroll-y-normalized));
+}
+
+#cursor {
+    transform:
+        translateX(var(--js-mouse-x))
+        translateY(var(--js-mouse-y));
+}
+
+#target {
+    transform:
+        perspective(10rem)
+        rotateY(calc(1deg * var(--js-mouse-relative-cx-normalized)))
+        rotateX(calc(-1deg * var(--js-mouse-relative-cy-normalized)));
+}</pre></code>
+            <h2>Live example</h2>
+            <div id='target' data-medium-target>#target</div>
+            <section id='out'></section>
+            <h3>Targets (optional)</h3>
+            <p>By default, all coordinates will be calculated from the top left corner of the window and its center. You can mark a few elements with data-medium-target attribute to add relative coordinates to them as well:</p>
+            <code><pre>
+&lt;div data-medium-target&gt;...&lt;/div&gt;
+</pre></code>
+            <p>To activate more target elements later use the update method:</p>
+            <code></pre>
+medium.update();
+</pre></code>
+            <h2>GitHub</h2>
+            <a href='https://github.com/sfi0zy/medium'>https://github.com/sfi0zy/medium</a>
+            <h2>License</h2>
+            <p>MIT License</p>
+            <p>Copyright &copy; Ivan Bogachev, 2023</p>
+            <div id='void'>void</div>
+            <div id='cursor'></div>
+            <div id='scroll-indicator'></div>
+        </div>
+        <script type='module'>
+            import Medium from './css.medium.js';
+
+            const medium = new Medium({
+                features: {
+                    xy: true,
+                    scroll: true,
+                    time: true,
+                    random: true,
+                },
+            });
+        </script>
+        <script>
+            const target = document.getElementById('target');
+            const out = document.getElementById('out');
+
+            const observer = new MutationObserver(() => {
+                const style = getComputedStyle(target);
+
+                out.innerHTML = `
+<pre>#target {
+    /* Target properties: */
+    --js-target-width: ${style.getPropertyValue('--js-target-width')}
+    --js-target-height: ${style.getPropertyValue('--js-target-height')}
+    --js-mouse-relative-x: ${style.getPropertyValue('--js-mouse-relative-x')}
+    --js-mouse-relative-y: ${style.getPropertyValue('--js-mouse-relative-y')}
+    --js-mouse-relative-cx: ${style.getPropertyValue('--js-mouse-relative-cx')}
+    --js-mouse-relative-cy: ${style.getPropertyValue('--js-mouse-relative-cy')}
+    --js-mouse-relative-cd: ${style.getPropertyValue('--js-mouse-relative-cd')}
+    --js-mouse-relative-x-normalized: ${style.getPropertyValue('--js-mouse-relative-x-normalized')}
+    --js-mouse-relative-y-normalized: ${style.getPropertyValue('--js-mouse-relative-y-normalized')}
+    --js-mouse-relative-cx-normalized: ${style.getPropertyValue('--js-mouse-relative-cx-normalized')}
+    --js-mouse-relative-cy-normalized: ${style.getPropertyValue('--js-mouse-relative-cy-normalized')}
+    --js-mouse-relative-cd-normalized: ${style.getPropertyValue('--js-mouse-relative-cd-normalized')}
+
+    /* Properties, inherited from document.body: */
+    --js-window-width: ${style.getPropertyValue('--js-window-width')}
+    --js-window-height: ${style.getPropertyValue('--js-window-height')}
+    --js-mouse-x: ${style.getPropertyValue('--js-mouse-x')}
+    --js-mouse-y: ${style.getPropertyValue('--js-mouse-y')}
+    --js-mouse-cx: ${style.getPropertyValue('--js-mouse-cx')}
+    --js-mouse-cy: ${style.getPropertyValue('--js-mouse-cy')}
+    --js-mouse-cd: ${style.getPropertyValue('--js-mouse-cd')}
+    --js-mouse-x-normalized: ${style.getPropertyValue('--js-mouse-x-normalized')}
+    --js-mouse-y-normalized: ${style.getPropertyValue('--js-mouse-y-normalized')}
+    --js-mouse-cx-normalized: ${style.getPropertyValue('--js-mouse-cx-normalized')}
+    --js-mouse-cy-normalized: ${style.getPropertyValue('--js-mouse-cy-normalized')}
+    --js-mouse-cd-normalized: ${style.getPropertyValue('--js-mouse-cd-normalized')}
+    --js-scroll-y: ${style.getPropertyValue('--js-scroll-y')}
+    --js-scroll-y-normalized: ${style.getPropertyValue('--js-scroll-y-normalized')}
+    --js-time-s: ${style.getPropertyValue('--js-time-s')}
+    --js-time-ms: ${style.getPropertyValue('--js-time-ms')}
+    --js-random-0: ${style.getPropertyValue('--js-random-0')}
+    --js-random-1: ${style.getPropertyValue('--js-random-1')}
+    --js-random-2: ${style.getPropertyValue('--js-random-2')}
+    /* 3, 4, 5, ..., 97, 98, 99 */
+}</pre>
+                `;
+            });
+
+            observer.observe(document.body, {
+                attributes: true,
+                attributeFilter: ['style']
+            });
+
+            observer.observe(target, {
+                attributes: true,
+                attributeFilter: ['style']
+            });
+        </script>
+    </body>
+</html>

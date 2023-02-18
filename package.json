@@ -1,0 +1,22 @@
+{
+  "name": "css.medium.js",
+  "version": "1.0.0",
+  "description": "Connect CSS and JS worlds with custom properties",
+  "author": "Ivan Bogachev <sfi0zy@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sfi0zy/medium.git"
+  },
+  "engines": {
+    "node": ">=19.5.0"
+  },
+  "main": "css.medium.js",
+  "devDependencies": {
+    "@babel/eslint-parser": "7.19.1",
+    "browser-sync": "2.27.10",
+    "eslint": "8.29.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-sonarjs": "0.16.0"
+  }
+}
