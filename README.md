@@ -6,6 +6,8 @@ Connect CSS and JS worlds.
 
 This tool adds CSS custom properties with the current mouse position, scroll position, time, random values etc.
 
+![](https://img.shields.io/badge/version-1.0.1-480ca8) ![](https://img.shields.io/badge/dependencies-0-480ca8) ![](https://img.shields.io/badge/license-MIT-480ca8)
+
 
 ## NPM
 
@@ -25,6 +27,8 @@ import Medium from 'https://unpkg.com/css.medium.js@1.0.0/css.medium.js';
 
 ### JS
 
+Import the library and choose features to use:
+
 ```javascript
 import Medium from 'css.medium.js';
 
@@ -41,6 +45,8 @@ const medium = new Medium({
 
 
 ### CSS
+
+Use various values from the JS world through CSS custom properties (see the list of the available properties below):
 
 ```css
 #scroll-indicator {
