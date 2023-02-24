@@ -144,10 +144,18 @@ Targets will get additional local properties for `xy` feature:
 | --js-mouse-relative-cy-normalized |
 | --js-mouse-relative-cd-normalized |
 
+They have almost the same logic as the global CSS custom properties, but we use the size and the position of the target element instead of the window in our calculations.
 
-They have almost the same logic as the global CSS custom properties, but we use the target element instead of the window in our calculations.
+Also, targets will get additional properties for `scroll` feature:
 
-*Note: since target elements can be smaller than the viewport, the coordinates of the mouse can be outside of them sometimes. Because of that, normalized values for target elements aren't limited to the range from 0 to 1 or from -1 to 1. They are fitted to have values of 0 or 1 on the targets borders with the same logic as the global ones and the window borders. We can clamp() these values in CSS if it's required.*
+| Name                       | Expected values                                     |
+| -------------------------- | --------------------------------------------------- |
+| --js-target-top            | from 0px to window height                           |
+| --js-target-top-normalized | from 0 at the top window border to 1 at the bottom  |
+| --js-target-cy             | from -(window height / 2) to (window height / 2)    |
+| --js-target-cy-normalized  | from -1 at the top window border to 1 at the bottom |
+
+*Note: since target elements can be smaller than the viewport, the coordinates of the mouse can be outside of them sometimes. Because of that, normalized values for target elements aren't limited to the range from 0 to 1 or from -1 to 1. They are fitted to have values of 0 or 1 on the targets borders with the same logic as the global ones and the window borders. The top and cy values for targets are not limited to the viewport and can be outside of that range as well. We can clamp() all these values in CSS if it's required by design.*
 
 To activate more target elements later we can use the `update` method:
 

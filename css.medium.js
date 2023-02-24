@@ -106,6 +106,8 @@ export default class Medium {
 
         this.#data.xy.window.width = width;
         this.#data.xy.window.height = height;
+
+        this.#onScroll();
     }
 
     static #onWindowResizeFallback() {
@@ -224,22 +226,52 @@ export default class Medium {
             return;
         }
 
-        const { scrollY, innerHeight } = window;
+        const { scrollY } = window;
+        const { height } = this.#data.xy.window;
 
         const fullHeight = Math.max(
-            document.body.offsetHeight - innerHeight,
-            innerHeight,
+            document.body.offsetHeight - height,
+            height,
         );
 
         const scrollYN = Medium.#round(scrollY / fullHeight);
 
         document.body.style.setProperty('--js-scroll-y', `${scrollY}px`);
         document.body.style.setProperty('--js-scroll-y-normalized', scrollYN);
+
+        this.#targets.forEach((target) => {
+            if (!(target instanceof HTMLElement)) {
+                return;
+            }
+
+            const rect = target.getBoundingClientRect();
+            const t = Math.round(rect.top);
+            const tN = Medium.#round(t / height);
+            const tHeight = rect.height;
+            const cy = Math.round(t + (tHeight / 2) - (height / 2));
+            const cyN = Medium.#round(cy / (height / 2));
+
+            target.style.setProperty('--js-target-top', `${t}px`);
+            target.style.setProperty('--js-target-top-normalized', tN);
+            target.style.setProperty('--js-target-cy', `${cy}px`);
+            target.style.setProperty('--js-target-cy-normalized', cyN);
+        });
     }
 
     static #onScrollFallback() {
         document.body.style.setProperty('--js-scroll-y', '0px');
         document.body.style.setProperty('--js-scroll-y-normalized', 0);
+
+        this.#targets.forEach((target) => {
+            if (!(target instanceof HTMLElement)) {
+                return;
+            }
+
+            target.style.setProperty('--js-target-top', '0px');
+            target.style.setProperty('--js-target-top-normalized', 0);
+            target.style.setProperty('--js-target-cy', '0px');
+            target.style.setProperty('--js-target-cy-normalized', 0);
+        });
     }
 
     #onNextFrame(now) {
