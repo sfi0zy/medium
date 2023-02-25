@@ -221,7 +221,7 @@ export default class Medium {
 
     #onScroll() {
         if (!this.#features.scroll) {
-            Medium.#onScrollFallback();
+            this.#onScrollFallback();
 
             return;
         }
@@ -258,7 +258,7 @@ export default class Medium {
         });
     }
 
-    static #onScrollFallback() {
+    #onScrollFallback() {
         document.body.style.setProperty('--js-scroll-y', '0px');
         document.body.style.setProperty('--js-scroll-y-normalized', 0);
 
