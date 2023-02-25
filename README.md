@@ -6,7 +6,7 @@ Connect CSS and JS worlds.
 
 This tool adds CSS custom properties with the current mouse position, scroll position, time, random values etc.
 
-![](https://img.shields.io/badge/version-1.1.0-480ca8) ![](https://img.shields.io/badge/dependencies-0-480ca8) ![](https://img.shields.io/badge/license-MIT-480ca8)
+![](https://img.shields.io/badge/version-1.1.1-480ca8) ![](https://img.shields.io/badge/dependencies-0-480ca8) ![](https://img.shields.io/badge/license-MIT-480ca8)
 
 
 ## NPM
@@ -19,7 +19,7 @@ npm install css.medium.js
 ## CDN
 
 ```javascript
-import Medium from 'https://unpkg.com/css.medium.js@1.1.0/css.medium.js';
+import Medium from 'https://unpkg.com/css.medium.js@1.1.1/css.medium.js';
 ```
 
 
