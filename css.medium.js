@@ -27,6 +27,7 @@ export default class Medium {
             scroll: options?.features?.scroll,
             time: options?.features?.time,
             random: options?.features?.random,
+            math: options?.features?.math,
         };
 
         this.#targets = Medium.#findTargets();
@@ -47,6 +48,10 @@ export default class Medium {
             Medium.#setRandomProperties();
         }
 
+        if (this.#features.math) {
+            Medium.#setMathProperties();
+        }
+
         this.#prerunEvents();
         this.#initEventListeners();
     }
@@ -65,6 +70,10 @@ export default class Medium {
 
             document.body.style.setProperty(`--js-random-${i}`, value);
         }
+    }
+
+    static #setMathProperties() {
+        document.body.style.setProperty('--js-math-pi', Math.PI);
     }
 
     #prerunEvents() {

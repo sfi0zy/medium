@@ -39,6 +39,7 @@ const medium = new Medium({
         scroll: true,
         time: true,
         random: true,
+        math: true,
     },
 });
 ```
@@ -123,6 +124,13 @@ These custom properties will be added to `document.body` and will be updated if 
 | ------------------------ | --------------------------------------------------- |
 | --js-random-0            | from 0 to 1                                         |
 | --js-random-1            | same as random-0, all the way to random-99          |
+
+
+### Feature: math
+
+| Name                     | Expected values                                     |
+| ------------------------ | --------------------------------------------------- |
+| --js-math-pi             | 3.14159                                             |
 
 
 ## Targets (optional)
